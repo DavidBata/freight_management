@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<!-- ('is_company','=', True) -->
+    <data >
+        <record id="freight_order_view_form_sale_order" model="ir.ui.view">
+            <field name="name">freight.order.view.form.sale.order</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="options">{'no_create': True, 'no_open': True, 'no_edit':True}</attribute>
+                    <attribute name="string">Socio de Negocio</attribute>
+                    <attribute name="domain">[('type', '=', 'delivery'),('user_id','=', user_id)]</attribute>
+                    <attribute name="invisible">0</attribute>
+                </xpath>
+                <!-- Moneda -->
+                <xpath expr="//field[@name='currency_id']" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                    <attribute name="domain">[("active","=",True)]</attribute>
+                </xpath>
+                <!-- Fecha Prometida -->
+                <xpath expr="//field[@name='validity_date']" position="attributes">
+                    <attribute name="string">Fecha Prometida</attribute>
+                </xpath>
+                
+                <!-- Caleta Monta Carga -->
+                <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                    <field name="caleta" string="Requiere Caleta"/>
+                    <field name="mota_carga" string="Requiere MontaCarga"/>
+                    <field name="canal_sale" string="Canal de Venta"/>
+                </xpath>
+                
+                <xpath expr="//field[@name='pricelist_id']" position="attributes">
+                    <attribute name="string">Lista de Precio</attribute>
+                </xpath>
+
+                <!--Direccion de Entegra  -->
+                <xpath expr="//field[@name='validity_date']" position="before">
+                    <field name="document_type" attrs="{'invisible': [('state', 'not in', ['draft'])]} "></field>
+                    <field name="name_document" readonly="1"></field>
+                    <field name="delivery_address_id" no_create="1" no_edit="1" invisible="1" no_open="1" attrs="{'readonly': [('state', 'not in', ['draft','uploaded'])]} "/>
+                </xpath>
+
+                <!-- Domain para los productos-->
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
+                    <attribute name="domain">[('sale_ok', '=', True)]</attribute>
+                    <attribute name="options">{'no_create': True,'no_edit': True}</attribute>
+                </xpath>
+                
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_template_id']" position="attributes">
+                    <attribute name="domain">[('sale_ok', '=', True)]</attribute>
+                    <attribute name="options">{'no_create': True,'no_edit': True}</attribute>
+                </xpath>
+
+                <xpath expr="//tree/field[@name='name']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+
+                <!-- Nuevo Estado Agregado -->
+                <xpath expr="//field[@name='state']" position="attributes">
+                    <attribute name="statusbar_visible">draft,uploaded,sent,sale</attribute>
+                </xpath>
+                <!--Boton Confirmar Para vendedor   -->
+                <xpath expr="//button[@name='action_confirm']" position="after">
+                    <button name="pendiente_aprobar" class="btn btn-success" type="object" string="Pedir Aprobacion"  groups="sales_team.group_sale_salesman" attrs="{'invisible': [('state', 'in', ['uploaded','sale'])]}"/>
+                    <button name="pedir_autorizacion" class="btn btn-success" type="object" string="Confirmar Pedido" groups="freight_management.group_venta_responsable" attrs="{'invisible': [('state', 'in', ['draft','sale'])]}"/>
+                    <!-- <button name="okledamos_field" class="btn btn-success" type="object" string="estamos aqui"/> -->
+                </xpath>
+                
+                <xpath expr="//button[@name='action_quotation_send']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_quotation_send'][4]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <!-- Create Factura invisible -->
+                <xpath expr="//button[@id='create_invoice']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                
+
+                <xpath expr="//button[@name='action_confirm'][2]" position="attributes">
+                    <attribute name="groups">sales_team.group_sale_manager</attribute>
+                    <attribute name="attrs">{'invisible': [('state', 'not in', ['draft','uploaded'])]}</attribute>
+                    <attribute name="class">btn btn-outline-primary</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_cancel']" position="attributes">
+                    <attribute name="groups">sales_team.group_sale_manager</attribute>
+                </xpath>
+                <!-- Ordenes De Carga Registradas -->
+                <xpath expr="//tree/field[@name='product_uom_qty']" position="after">
+                    <!-- <field name="delivery_address_id" readonly="1"/> -->
+                    <field name="freight_order" string="Despachado" readonly="1"/>
+                    <field name="freight_order_id" string="Num Despacho" readonly="1"/>
+                </xpath>
+                <xpath expr="//tree/field[@name='price_unit']" position="attributes">
+                  <attribute name="string">Precio Bulto</attribute>
+                </xpath>
+                 <xpath expr="//tree/field[@name='tax_id']" position="attributes">
+                  <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//tree/field[@name='price_unit']" position="after">
+                    <field name="costo_unit" edit="False"  readonly="False" string ="Precio Unit"/>
+                    <field name="price_unit_limite"/>
+                </xpath>
+                
+                <xpath expr="//kanban[@class='o_kanban_mobile']/field[@name='price_unit']" position="after">
+                    <field name="costo_unit"   edit="False"  readonly="False" string ="Precio Unit"/>
+                    <field name="price_unit_limite"/>
+                </xpath>
+                <!-- Peso Cantidad De Bultos -->
+                <xpath expr="//group[@name='note_group']/group" position="after">
+                    <group colspan="2">
+                        <field name="weight_product" colspan="2"  readonly="1"/>
+                        <field name="bultos" colspan="2"  readonly="1"/>
+                    </group>
+                    <!-- <field name="weight_product" readonly="1"></field> -->
+                </xpath>
+                
+            </field>
+        </record>
+        <record id="view_quotation_tree_with_onboarding_inherit_module_name" model="ir.ui.view">
+            <field name="name">model.name.view.tree.butoon.confirmar</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <header>
+                        <button name="pedir_autorizacion" type="object" string="Confirmar Pedidos" groups="freight_management.group_venta_responsable"/>
+                    </header>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

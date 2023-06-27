@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="ability_view_form_fleet_vehicle" model="ir.ui.view">
+            <field name="name">ability.view.form.fleet.vehicle</field>
+            <field name="model">fleet.vehicle</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+            <field name="priority" eval="20"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='location']" position="after">
+                    <label for="ability"/>
+                    <div class="o_row">
+                        <field name="ability" string="Capacidad"/><span>kG</span>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

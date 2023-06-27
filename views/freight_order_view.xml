@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+   
+    <record id="freight_order_tree_view_tree" model="ir.ui.view">
+        <field name="name">Freight Order tree</field>
+        <field name="model">freight.order</field>
+        <field name="arch" type="xml">
+            <tree>
+                <header>
+                    <button name="confirmar_freight" string="Confirmdatosar Orden Carga" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ['sent','import_ademp'])]}"/>
+                    <button name="import_adempiere" groups="freight_management.group_freight_order,freight_management.group_freight_order_administrador_carga" string="Registrar Adempiere" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ['draft','import_ademp'])]}"/>
+                    <!-- <button name="import_adempiere" groups="freight_management.group_freight_order,freight_management.group_freight_order_administrador_carga" string="Registrar Adempiere" type="object" class="oe_highlight" attrs="{'invisible': ['|',('state', 'in', ['draft','import_ademp']),('is_opl','=',True)]}"/>
+                    <button name="import_orden_distribucion" groups="freight_management.group_freight_order,freight_management.group_freight_order_administrador_carga" string="Crear Orden Distribucion" type="object" class="oe_highlight" attrs="{'invisible': ['|',('state', 'in', ['draft','import_ademp']),('is_opl','=',False)]}"/> -->
+                    
+
+                    <!-- <button name="prueba_prueba"  string="prueba" type="object" class="oe_highlight" /> -->
+                </header>
+
+                <field name="name"/>
+                <field name="truck_id"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="sale_order_id"/>
+                <field name="date_upload"/>
+                <field name="state" widget="badge" decoration-success="state == 'sent'" decoration-info="state == 'draft'" decoration-primary="state == 'import_ademp'"   readonly="1"/>
+            </tree>
+        </field>
+    </record>
+        
+    <record id="freight_order_search_search" model="ir.ui.view">
+        <field name="name">freight.order.search</field>
+        <field name="model">freight.order</field>
+        <field name="priority" eval="15"/>
+        <field name="arch" type="xml">
+            <search string="Estado Borrador">
+                <filter string="Usuario Logistico" name="user_id" context="{'group_by': 'user_id'}"/>
+                <filter name="state_draft" string="Estado Borrador" domain="[('state', '=', 'draft')]"/>
+                <filter string="Mis Cargas" domain="[('user_id', '=', uid)]" name="my_freight_order"/>
+                <separator/>
+            </search>
+        </field>
+    </record>
+    
+    <record id="freight_order_form_view_form" model="ir.ui.view">
+        <field name="name">Freight Order form</field>
+        <field name="model">freight.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="confirmar_freight" string="Confirmar Orden Carga" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ['sent','import_ademp'])]}"/>
+                    <button name="import_adempiere" groups="freight_management.group_freight_order,freight_management.group_freight_order_administrador_carga" string="Registrar Adempiere" type="object" class="oe_highlight" attrs="{'invisible': ['|',('state', 'in', ['draft','import_ademp']),('is_opl','=',True)]}"/>
+                    <button name="import_orden_distribucion" groups="freight_management.group_freight_order,freight_management.group_freight_order_administrador_carga" string="Crear Orden Distribucion" type="object" class="oe_highlight" attrs="{'invisible': ['|',('state', 'in', ['draft','import_ademp']),('is_opl','=',False)]}"/>
+                    
+                    <field name="state" widget="statusbar" readonly="1"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1 class="mt0">
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="truck_id" />
+                            <field name="crear_c_order_in_id" no_create="1" no_edit="1" no_open="1"/> 
+                            <!-- <field name="sale_order_id"/> -->
+                            <field name="is_opl"/>
+                            <field name="tipo_document_opl" attrs="{'invisible': [('is_opl', '=', False)],'required':[('is_opl','=',True)]}"/>
+                            <field name="date_upload"/>
+                        </group>
+                        <group>
+                            <field name="order_date"/>
+                            <field name="driver_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Orden">
+                            <field name="sale_order_line_ids" widget="section_and_note_one2many" attrs="{'readonly': [('state', 'in', ('import_ademp'))]}">
+                            <tree string="Sales Order Lines"
+                                editable="bottom">
+                                <field name="order_id" readonly="True"/>
+                                <field name="delivery_address_id" readonly="True" />
+                                <field name="destination_company_id" readonly="True"/>
+                                <field name="order_partner_id" readonly="True"/>
+                                <field name="name" readonly="True"/>
+                                <field name="salesman_id" readonly="True"/>
+                                <field name="product_uom_qty" readonly="True"/>
+                                <field name="qty_delivered" readonly="False" string="Cant Entrega" no_edit="False"/>
+                                <!-- <field name="qty_invoiced" readonly="True" string="CantFacturada"/> -->
+                                <field name="qty_to_invoice" readonly="True"/>
+                                <field name="price_subtotal" readonly="True"/>
+                                <field name="product_weight" readonly="True"/>
+                            </tree> 
+                            </field>
+                            <div class="o_row">
+                                <h2>
+                                    <label for="accumulator_weight"/>
+                                    <field name="accumulator_weight" string="Peso Acumulado" readonly="1"/>
+                                </h2>
+                            </div>
+                            <div>
+                              <h2>
+                                  <label for="truck_weight"/>
+                                  <field name="truck_weight" readonly="1"/>
+                              </h2>
+                            </div>
+
+                        </page>
+                        
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    
+   
+
+  
+    
+</odoo>

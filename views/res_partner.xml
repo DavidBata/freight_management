@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data >
+        <record id="res_partner_direction_view_form_res_partner" model="ir.ui.view">
+            <field name="name">res.partner.direction.view.form.res.partner</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='o_address_format']" position="after">
+                    <field name="canal_sale"></field>
+                    <field name="responsable_id" string="Responsable" groups="sales_team.group_sale_salesman_all_leads"></field>
+                    <field name="is_opl"></field>
+                    <field name="activity_user_id" invisible="1"></field>
+                </xpath>
+            </field>
+        </record>
+        
+
+  
+
+    </data>
+</odoo>

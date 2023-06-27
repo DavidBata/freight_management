@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+
+    <record id="res_partner_direction_view_tree" model="ir.ui.view">
+        <field name="name">res.partner.direction.view.tree</field>
+        <field name="model">res.partner.direction</field>
+        <field name="arch" type="xml">
+            <tree string="Direccion Adicional">
+                <field name="partner_id"/>
+                <field name="name"/>
+                <field name="country_id"/>
+                <field name="state_id"/>
+                <field name="city"/>
+                <field name="street_suc"/>
+                <field name="street2_suc"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+    <record id="res_partner_direction_view_form" model="ir.ui.view">
+        <field name="name">res.partner.direction.view.form</field>
+        <field name="model">res.partner.direction</field>
+        <field name="arch" type="xml">
+            <form string="Direccion Adicional">
+                <sheet>
+                    <group>
+                        <group name="Direcion Adicional" string="string">
+                            <field name="partner_id"/>
+                            <field name="name"/>
+                            <field name="country_id"/>
+                            <field name="state_id"/>
+                            <field name="city"/>
+                            <field name="street_suc"/>
+                            <field name="street2_suc"/>
+                            <field name="description"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="res_partner_direction_action" model="ir.actions.act_window">
+        <field name="name">res.partner.direction.action</field>
+        <field name="res_model">res.partner.direction</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

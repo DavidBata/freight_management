@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="web_service_eng_view_tree" model="ir.ui.view">
+            <field name="name">Web.Service.tree</field>
+            <field name="model">web.service.eng</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="url" />
+                    <field name="description" />
+                    <field name="code"/>
+                    <field name="company_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="web_service_eng_form_view" model="ir.ui.view">
+        <field name="name">Web.Service.form</field>
+        <field name="model">web.service.eng</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1 class="mt0">
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                           
+                            <field name="url" />
+                            <field name="description" />
+                            
+                        </group>
+                        <group>
+                            <field name="code" readonly="1"/>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Ordenes De Carga">
+                            
+                            <field name="oredenes_carga_ids" no_edit="1" mode="tree" readonly="1"></field>
+
+                        </page>
+                        
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+
+    </data>
+</odoo>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="custom_report_agg_costo_unit" name="agg_price_costo_unit" inherit_id="sale.report_saleorder_document">
+            <xpath expr="//th[@name='th_priceunit']" position="after">
+                <th name='th_costo_unit' class="text-end"> Precio Unitario</th>
+            </xpath>
+            <xpath expr="//td[@name='td_priceunit']" position="after">
+                    <td name="td_costo_unit" class="text-end">
+                        <span t-field="line.costo_unit"/>
+                    </td>
+            </xpath>
+        </template>
+    </data>
+    
+
+</odoo>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_order_line" model="ir.actions.act_window">
+        <field name="name">Sales Orders Line</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <t t-set="hoy" t-value="DateTime.today()"/> -->
+        <field name="context">{'search_default_salesperson':1}</field>
+        <field name="domain">['|',('back_order_id','=',False),('back_order_id.retraso','=',True),('order_id.state', '=', ('sale'))]</field>
+    </record>
+
+    <menuitem id="menu_sale_order_line"
+            name="Orders Line"
+            parent= "sale.sale_order_menu"
+            action="freight_management.action_order_line"
+            sequence="100"/>
+    <menuitem
+            id="order_line_desde_orden_carga_menu"
+            name="Lineas De Pedidos"
+            action="freight_management.action_order_line"
+            parent="menu_freight_root"
+            sequence="10"/>
+
+
+    <record id="action_freight_order" model="ir.actions.act_window">
+        <field name="name">Freight Order</field>
+        <field name="res_model">freight.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="freight_order_tree_view_tree"/>
+        <field name="context">{'search_default_my_freight_order':1}</field>
+        <field name="search_view_id" ref="freight_order_search_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Define a new freight order
+            </p>
+        </field>
+    </record>
+    <menuitem id="menu_freight_root" name="Freight Management" sequence="4"  groups="freight_management.group_freight_order_org" />
+    <menuitem id="menu_freight_order" name="Freight" parent="menu_freight_root" sequence="2" action="action_freight_order" groups="freight_management.group_freight_order_org"/>
+
+    <record id="action_web_service_eng_views" model="ir.actions.act_window">
+        <field name="name">Web Service</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">web.service.eng</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Define a new web service eng
+            </p>
+        </field>
+    </record>
+    <menuitem id="web_service_conf" name="config/WebService" parent="menu_freight_root" groups="freight_management.group_freight_order" sequence="3" action="action_web_service_eng_views"/>
+    <!-- <menuitem id="menu_freight_root" name="Freight Management" sequence="4" /> -->
+
+</odoo>

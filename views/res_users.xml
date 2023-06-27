@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="res_users_inherit_user_responsable" model="ir.ui.view">
+        <field name="name">res.user.responsable</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='oe_title']" position="after">
+                <label for="activity_user_id"/>
+                <field name="activity_user_id" string="Responsable" options="{'no_create': True,'no_edit': True, 'no_open': True}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

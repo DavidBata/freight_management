@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="sale_order_line_views_add_fields" model="ir.ui.view">
+        <field name="name">sale.order.line.views.add.fields</field>
+        <field name="model">sale.order.line</field>
+        <field name="inherit_id" ref="sale.view_order_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_id']" position="before">
+                <header>
+                    <button name="create_order_freicht" type="object" groups="freight_management.group_freight_order_org"  string="Crear Orden Carga"/>
+                    <button name="crear_back_order" type="object" groups="freight_management.group_freight_order_org"  string="Declarar Retraso"/>
+                </header>
+            </xpath>
+            
+            <xpath expr="//field[@name='product_uom_qty']" position="after">
+                <field name="fecha_vencimiento"  optional="hide"></field>
+                <field name="order_id_caleta"  optional="show" string="Requiere Caleta"/>
+                <field name="order_id_mota_carga"  optional="show" string="Requiere MontaCarga"/>
+                <field name="freight_order"  optional="hide" />
+                <field name="freight_order_id"   optional="show" string="Orden de Carga"/>
+                <field name="validity_date"  optional="hide" string="Fecha Prometida"/>
+                <field name="back_order_id"  optional="hide"></field>
+                <field name="delivery_address_id"  optional="hide"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_id']" position="after">
+                <field name="vat"  optional="show"/>
+                <field name="destination_company_id"  optional="show"/>
+                <field name="type_negociate_id"  optional="show"/>
+                <field name="list_price_partner" optional="show" string="Lista Precio Socio"/>
+                <field name="canal_sale"  optional="show"/>
+                <field name="date_order"  optional="show"/>
+                <field name="create_date"  optional="show"/>
+                
+            </xpath>
+
+            <xpath expr="//field[@name='salesman_id']" position="attributes">
+                <attribute name="widget">many2one_avatar_user</attribute>
+            </xpath>
+            
+            <xpath expr="//field[@name='qty_invoiced']" position="after">
+                <field name="currency_id"/>
+                <field name="costo_unit"/>
+                <field name="list_price_limit"/>
+                <field name="list_price" string="Precio Bulto"/>
+            </xpath>
+            
+            
+            <xpath expr="//field[@name='order_partner_id']" position="attributes">
+                <attribute name="string">Socio De Negocio</attribute>
+            </xpath>
+
+            <!-- <xpath expr="//field[@name='qty_delivered']" position="attributes">
+                <attribute name="invisible"></attribute>
+            </xpath>
+            <xpath expr="//field[@name='qty_invoiced']" position="attributes">
+                <attribute name="invisible"></attribute> -->
+            <!-- </xpath> -->
+        </field>
+    </record>
+    <record id="search_view_sale_order_line_inherit" model="ir.ui.view">
+        <field name="name">search.view.sale.order.line.inherit</field>
+        <field name="model">sale.order.line</field>
+        <field name="inherit_id" ref="sale.view_sales_order_line_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_sales_order_lines']" position="after">
+                <separator/>
+                <filter name="order_black_order" string="Restraso" domain="[('fecha_vencimiento', '&lt;', context_today().strftime('%Y-%m-%d')),('freight_order','=', False)]"/>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

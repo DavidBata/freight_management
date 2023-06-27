@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+        <record id="back_order_view_tree" model="ir.ui.view">
+            <field name="name">back.order.view.tree</field>
+            <field name="model">back.order</field>
+            <field name="arch" type="xml">
+                <tree string="">
+                    <field name="name"></field>
+                    <field name="retraso" optional="hide"></field>
+                    <field name="description"></field>
+                    <!-- <field name=""></field> -->
+                </tree>
+            </field>
+        </record>
+        <record id="back_order_view_form" model="ir.ui.view">
+            <field name="name">back.order.view.form</field>
+            <field name="model">back.order</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1 class="mt0">
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                
+                                <h4 class="mt0">
+                                    <label for='retraso'>Retraso</label>
+                                    <field name="retraso" widget="boolean_toggle"></field>
+                                </h4>
+                                
+                            </group>
+                            <group>
+                                <!-- <field name="name"></field> -->
+                                 
+                                
+                                <field name="motivo_bo" attrs="{'invisible': [('retraso', '=',True)], 'required': [('retraso', '=',False)]}"></field>
+                                <field name="motivo_retraso" attrs="{'invisible': [('retraso', '=',False)], 'required': [('retraso', '=',True)]}"></field>
+                                
+                            </group>
+                            <group>
+                                <field name="description"></field>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="Lineas Back Order" string="Lineas de Ordenes">
+                                <field name="sale_order_line_ids"></field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_black_order" model="ir.actions.act_window">
+            <field name="name">Black Orders</field>
+            <field name="res_model">back.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define a new Back Order
+            </p>
+            </field>
+        </record>
+        <menuitem
+            id="menu_back_order_line"
+            name="Back Order"
+            action="freight_management.action_black_order"
+            parent="menu_freight_root"
+            sequence="10"/>
+    
+    </data>
+    
+
+</odoo>

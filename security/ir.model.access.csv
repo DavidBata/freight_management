@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_freight_order,freight.order,model_freight_order,freight_management.group_freight_order_org,1,1,1,1
+access_sale_order_line,sale.order.line.cordinador,model_sale_order_line,freight_management.group_venta_responsable,1,0,0,0
+access_web_service,web.service.eng,model_web_service_eng,base.group_user,1,1,1,1
+access_back_order,back.order,model_back_order,base.group_user,1,1,1,1
+
+
+
+
+
+
+
+
+
+
+
